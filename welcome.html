@@ -89,6 +89,13 @@
   </footer>
 
   <script>
+  // Prevent access via back button after logout
+window.addEventListener("pageshow", function(event) {
+  if (!localStorage.getItem("loggedInUser")) {
+    window.location.href = "index.html";
+  }
+});
+
     const loggedInUser = localStorage.getItem('loggedInUser');
     if (!loggedInUser) window.location.href = 'index.html';
     else {
