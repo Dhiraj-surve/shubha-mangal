@@ -92,6 +92,40 @@
     }
   </style>
 
+  <script>
+    // Redirect if already logged in
+    if (localStorage.getItem("loggedInUser")) {
+      window.location.href = "welcome.html";
+    }
+
+    // Login function
+    function loginUser(e) {
+      e.preventDefault();
+
+      const userId = document.getElementById("userid").value.trim();
+      const password = document.getElementById("password").value;
+
+      const user = localStorage.getItem(userId);
+      if (!user) {
+        alert("User not found. Please register first.");
+        return;
+      }
+
+      const userData = JSON.parse(user);
+      if (userData.password === password) {
+        localStorage.setItem("loggedInUser", userId);
+        alert("Login successful!");
+        window.location.href = "welcome.html";
+      } else {
+        alert("Invalid password!");
+      }
+    }
+
+    // Attach form submit handler
+    window.onload = function () {
+      document.getElementById("loginForm").addEventListener("submit", loginUser);
+    };
+  </script>
 </head>
 <body>
 
@@ -121,35 +155,6 @@
       <p>Don't have an account? <a href="register.html">Register here</a></p>
     </div>
   </div>
-
-	
- <script>
-document.getElementById("loginForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const userId = document.getElementById("userid").value;
-  const password = document.getElementById("password").value;
-
-  fetch("https://shubha-mangal-backend.onrender.com/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ userid: userId, password: password })
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error("Login failed");
-    }
-    return response.json();
-  })
-  .then(data => {
-    localStorage.setItem("loggedInUser", userId); // Optional
-    window.location.href = "welcome.html";
-  })
-  .catch(error => {
-    alert("Invalid credentials. Please try again.");
-  });
-});
-</script>
 
 </body>
 </html>
