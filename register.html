@@ -123,45 +123,34 @@
   </div>
 
   <script>
-document.getElementById("registrationForm").addEventListener("submit", function (event) {
-  event.preventDefault();
+    document.getElementById("registrationForm").addEventListener("submit", function (event) {
+      event.preventDefault();
 
-  const userData = {
-    userid: document.getElementById("userid").value.trim(),
-    password: document.getElementById("password").value.trim(),
-    firstName: document.getElementById("firstName").value.trim(),
-    lastName: document.getElementById("lastName").value.trim(),
-    gender: document.getElementById("gender").value.trim(),
-    dob: document.getElementById("dob").value.trim(),
-    maritalStatus: document.getElementById("maritalStatus").value.trim(),
-    motherTongue: document.getElementById("motherTongue").value.trim(),
-    religion: document.getElementById("religion").value.trim(),
-    caste: document.getElementById("caste").value.trim(),
-    subCaste: document.getElementById("subCaste").value.trim(),
-    email: document.getElementById("email").value.trim(),
-    mobile: document.getElementById("mobile").value.trim()
-  };
-
-  fetch("https://shubha-mangal-backend.onrender.com/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(userData)
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === "success") {
-        alert("Registration successful!");
-        window.location.href = "index.html";
-      } else {
-        alert(data.message || "Registration failed.");
+      const userId = document.getElementById("userid").value.trim();
+      if (localStorage.getItem(userId)) {
+        alert("User ID already exists!");
+        return;
       }
-    })
-    .catch(error => {
-      console.error(error);
-      alert("Something went wrong while registering.");
-    });
-});
-</script>
 
+      const userData = {
+        firstName: document.getElementById("firstName").value.trim(),
+        lastName: document.getElementById("lastName").value.trim(),
+        gender: document.getElementById("gender").value,
+        dob: document.getElementById("dob").value,
+        maritalStatus: document.getElementById("maritalStatus").value,
+        motherTongue: document.getElementById("motherTongue").value.trim(),
+        religion: document.getElementById("religion").value.trim(),
+        caste: document.getElementById("caste").value.trim(),
+        subCaste: document.getElementById("subCaste").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        mobile: document.getElementById("mobile").value.trim(),
+        password: document.getElementById("password").value
+      };
+
+      localStorage.setItem(userId, JSON.stringify(userData));
+      alert("Registration successful! Please login.");
+      window.location.href = "index.html"; // Redirect to login page
+    });
+  </script>
 </body>
 </html>
